@@ -362,7 +362,7 @@
                 if (index === 0) element.classList.add('typing-cursor');
                 if (index < text.length) {
                     element.innerHTML += text.charAt(index);
-                    setTimeout(() => typeWriter(element, text, index + 1, callback), 100);
+                    setTimeout(() => typeWriter(element, text, index + 1, callback), 40);
                 } else {
                     element.classList.remove('typing-cursor');
                     if (callback) callback();
@@ -430,4 +430,5 @@
     </script>
 </body>
 </html>
+
 
