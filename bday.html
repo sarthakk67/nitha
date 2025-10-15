@@ -3,428 +3,219 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>A Special Message</title>
+    <title>A Fun Challenge!</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600&family=EB+Garamond:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.7.77/Tone.js"></script>
     <style>
         body {
-            font-family: 'EB Garamond', serif;
-            background-image: url('https://images.unsplash.com/photo-1462331940025-496dfbfc7564?q=80&w=2411&auto.format&fit=crop');
+            font-family: 'Poppins', sans-serif;
+            background-image: url('https://images.unsplash.com/photo-1534796636912-3b95b3ab5986?q=80&w=2071&auto.format&fit=crop');
             background-size: cover;
             background-position: center;
-            background-repeat: no-repeat;
             background-color: #0b021f;
             position: relative;
-            overflow-x: hidden; 
+            z-index: 0;
         }
-
         body::before {
             content: '';
             position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(270deg, #0b021f, #2a0b45, #0f1c3d, #4a1d42);
-            background-size: 800% 800%;
-            animation: cosmos-animation 30s ease infinite;
-            opacity: 0.9; 
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: linear-gradient(135deg, #1d2b64, #f8cdda, #4a1d42, #0f1c3d);
+            background-size: 400% 400%;
+            animation: gradient-animation 20s ease infinite;
+            opacity: 0.8;
             z-index: -1;
         }
-
-        #scroll-container {
-            /* Increased height from 400vh to 600vh to make the scroll slower */
-            height: 600vh; 
-            width: 100%;
-            position: relative;
+        @keyframes gradient-animation {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
         }
-
-        @keyframes cosmos-animation {
-            0%{background-position:0% 50%}
-            50%{background-position:100% 50%}
-            100%{background-position:0% 50%}
+        #character-image {
+            transition: transform 0.3s ease-in-out, filter 0.3s ease-in-out;
+            object-fit: cover;
         }
-        
-        #points-canvas {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 1;
-            transition: none;
+        .happy-glow {
+            filter: drop-shadow(0 0 20px rgba(255, 105, 180, 0.7));
         }
-
-        /* --- Updated Text Container --- */
-        #text-container {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: flex-end;
-            padding: 5rem 1rem;
-            /* The full-width gradient has been removed */
-            background: none;
-            z-index: 10;
-            transition: opacity 0.5s ease-in-out;
+        .ecstatic-glow {
+            animation: rainbow-glow 2s linear infinite;
         }
-
-        /* --- New Subtitle Effect --- */
-        #scroll-text {
-            color: #f0f0f0;
-            background-color: rgba(0, 0, 0, 0.65); /* Black strip behind the text */
-            padding: 0.5rem 1.5rem; /* Padding for the strip */
-            border-radius: 6px; /* Slightly rounded corners */
-            box-shadow: 0 2px 15px rgba(0,0,0,0.5); /* Subtle shadow for depth */
-            /* A very subtle text shadow to make the text feel inset */
-            text-shadow: 0 1px 3px rgba(0,0,0,0.4); 
+        @keyframes rainbow-glow {
+            0% { filter: drop-shadow(0 0 35px rgba(255, 0, 0, 1)); }
+            15% { filter: drop-shadow(0 0 35px rgba(255, 165, 0, 1)); }
+            30% { filter: drop-shadow(0 0 35px rgba(255, 255, 0, 1)); }
+            45% { filter: drop-shadow(0 0 35px rgba(0, 255, 0, 1)); }
+            60% { filter: drop-shadow(0 0 35px rgba(0, 127, 255, 1)); }
+            75% { filter: drop-shadow(0 0 35px rgba(75, 0, 130, 1)); }
+            90% { filter: drop-shadow(0 0 35px rgba(238, 130, 238, 1)); }
+            100% { filter: drop-shadow(0 0 35px rgba(255, 0, 0, 1)); }
         }
-
-        .classic-btn {
-            background-color: rgba(139, 125, 107, 0.8);
-            font-family: 'EB Garamond', serif;
-            font-weight: 600;
-            font-size: 1.1rem;
-            border-bottom: 2px solid rgba(90, 79, 65, 0.8);
-            transition: all 0.2s ease-in-out;
+        #give-chocolate-btn {
+             transition: transform 0.1s ease;
         }
-        .classic-btn:hover {
-            background-color: #7a6d5b;
-            transform: translateY(-2px);
-        }
-        
-        #letter-section {
-            z-index: 20;
-            transition: opacity 1s ease-in-out;
-        }
-
-        .letter-container {
-            background-color: #fdf9f0;
-            color: #4a3c2c;
-            box-shadow: 0 0 5px rgba(0,0,0,0.1), 0 4px 8px rgba(0,0,0,0.2);
-            border: 1px solid #e4d8c5;
-            min-height: 85vh;
-            font-family: 'Caveat', cursive;
-        }
-
-        .typing-cursor::after {
-            content: '|';
-            display: inline-block;
-            vertical-align: bottom;
-            animation: blink 0.7s infinite;
-            margin-left: 5px;
-            font-weight: 400;
-        }
-
-        @keyframes blink {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0; }
+        #give-chocolate-btn:active {
+            transform: scale(0.95);
         }
     </style>
 </head>
-<body class="antialiased">
+<body class="antialiased text-white flex flex-col items-center justify-center min-h-screen p-4">
 
-    <div id="progress-container" class="fixed top-0 left-0 w-full h-1.5 z-50 bg-white/20 backdrop-blur-sm">
-        <div id="progress-bar" class="h-full bg-white" style="width: 0%; box-shadow: 0 0 10px #fff, 0 0 5px #fff; transition: width 0.05s linear;"></div>
-    </div>
-    
-    <canvas id="points-canvas"></canvas>
-
-    <div id="text-container">
-        <h1 id="scroll-text" class="text-3xl md:text-5xl font-semibold text-center"></h1>
-        <div class="mt-12">
-             <a href="index.html" id="back-button" class="classic-btn text-white py-3 px-8 rounded-md shadow-lg" style="visibility: hidden;">
-                &larr; Go Back
-            </a>
+    <div class="w-full max-w-md mb-6">
+        <div id="progress-container" class="w-full bg-gray-900/60 rounded-full h-5 relative border-2 border-gray-500 backdrop-blur-sm">
+            <div id="progress-bar" class="bg-gradient-to-r from-pink-500 to-yellow-400 h-full rounded-full transition-all duration-200 ease-linear" style="width: 0%;"></div>
+        </div>
+        <div class="relative w-full max-w-md mt-1">
+             <div class="absolute text-lg" style="left: 5%; transform: translateX(-50%);">😐</div>
+             <div class="absolute text-lg" style="left: 50%; transform: translateX(-50%);">😊</div>
+             <div class="absolute text-lg" style="right: 0; transform: translateX(50%);">😍</div>
         </div>
     </div>
 
-    <div id="letter-section" class="fixed top-0 left-0 w-full h-full flex items-center justify-center p-4 md:p-8" style="opacity: 0; pointer-events: none;">
-        <main class="w-full">
-            <div class="letter-container p-8 md:p-12 rounded-md shadow-lg max-w-4xl mx-auto flex flex-col">
-                <div class="flex-grow">
-                    <p class="letter-typewriter text-3xl md:text-4xl mb-6 text-left min-h-[48px]"></p>
-                    <p class="letter-typewriter text-3xl md:text-4xl mb-6 text-left min-h-[220px]"></p>
-                    <p class="letter-typewriter text-3xl md:text-4xl mb-10 text-left min-h-[120px]"></p>
-                </div>
-                <div class="text-center mt-auto">
-                    <a href="index.html" id="final-back-button" class="classic-btn text-white py-3 px-8 rounded-md shadow-lg" style="visibility: hidden;">
-                        &larr; Go Back
-                    </a>
-                </div>
-            </div>
-        </main>
+    <h1 class="text-5xl font-bold mt-8 mb-6" style="text-shadow: 2px 2px 4px rgba(0,0,0,0.4);">Feed Nits</h1>
+    <img id="character-image" src="https://iili.io/KT3OVLJ.md.jpg" class="mx-auto rounded-2xl shadow-lg w-[300px] h-[300px]" alt="Character waiting for a chocolate">
+    
+    <div class="flex flex-col items-center gap-4 mt-8">
+        <div class="text-2xl font-semibold" style="text-shadow: 1px 1px 3px rgba(0,0,0,0.5);">
+            Brownies: <span id="chocolate-count" class="font-bold text-yellow-400">0</span>
+        </div>
+        <img id="give-chocolate-btn" src="https://iili.io/KIbUA3F.md.png" class="w-32 cursor-pointer transition-transform duration-150 ease-in-out hover:scale-110 active:scale-95" alt="Give a chocolate" title="Click me or press Spacebar!">
+        <p class="text-base text-gray-200 mt-2" style="text-shadow: 1px 1px 3px rgba(0,0,0,0.5);">(Tap or Hold Spacebar)</p>
     </div>
-
-    <audio id="background-music" loop>
-        <source src="darling.mp3" type="audio/mpeg">
-        Your browser does not support the audio element.
-    </audio>
-
-    <button id="play-music-btn" class="fixed bottom-4 right-4 z-50 text-white bg-black/50 p-3 rounded-full hover:bg-black/75 transition-colors focus:outline-none">
-        <svg id="play-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
-        <svg id="mute-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="hidden"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><line x1="23" y1="9" x2="17" y2="15"></line><line x1="17" y1="9" x2="23" y2="15"></line></svg>
-    </button>
-
-    <div id="scroll-container"></div>
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            const canvas = document.getElementById('points-canvas');
-            const ctx = canvas.getContext('2d');
-            const scrollText = document.getElementById('scroll-text');
-            const backButton = document.getElementById('back-button');
-            const letterSection = document.getElementById('letter-section');
-            const progressBar = document.getElementById('progress-bar'); // Get the progress bar element
+            let chocolateCount = 0;
+            let currentMood = 'waiting';
+            let synth;
+            let isAudioReady = false;
 
-            let width = canvas.width = window.innerWidth;
-            let height = canvas.height = window.innerHeight;
+            let spaceHeldInterval = null;
+            let spaceHeldTimeout = null;
+            let isSpaceHeldDown = false;
 
-            let targetProgress = 0;
-            let currentProgress = 0;
-            const points = [];
-            const pointCount = 2000;
-            const targetPoint = { x: width / 2, y: height / 2, size: 15 };
+            const CONTENT_THRESHOLD = 1;
+            const HAPPY_THRESHOLD = 10;
+            const ECSTATIC_THRESHOLD = 20;
+
+            const characterImage = document.getElementById('character-image');
+            const giveChocolateBtn = document.getElementById('give-chocolate-btn');
+            const chocolateCountDisplay = document.getElementById('chocolate-count');
+            const progressBar = document.getElementById('progress-bar');
+
+            const waitingImage = 'nithawp.jpg';
+            const contentImage = '2.jpg';
+            const happyImage = '3.jpg';
+            const ecstaticImage = '5.jpg';
             
-            const rays = [];
-            const rayCount = 8;
-            let rotation = 0;
+            function getMoodLevel(mood) {
+                if (mood === 'ecstatic') return 3;
+                if (mood === 'happy') return 2;
+                if (mood === 'content') return 1;
+                return 0;
+            }
 
-            const textStates = [
-                "According to Google there are about 8.2 Billion people in the world...",
-                "...but no one catches my attention like 1 girl...",
-                "...and you're the one."
-            ];
+            async function giveChocolate() {
+                if (!isAudioReady) {
+                    await Tone.start();
+                    synth = new Tone.Synth().toDestination();
+                    isAudioReady = true;
+                }
+                if (isAudioReady) {
+                    synth.triggerAttackRelease("C7", "16n");
+                }
+                if (giveChocolateBtn) {
+                    giveChocolateBtn.style.transform = 'scale(0.9)';
+                    setTimeout(() => { giveChocolateBtn.style.transform = 'scale(1)'; }, 100);
+                }
+                chocolateCount++;
+                updateGame();
+            }
 
-            window.addEventListener('resize', () => {
-                width = canvas.width = window.innerWidth;
-                height = canvas.height = window.innerHeight;
-                targetPoint.x = width / 2;
-                targetPoint.y = height / 2;
-                init(); 
-                initRays();
+            if (giveChocolateBtn) {
+                giveChocolateBtn.addEventListener('click', giveChocolate);
+            }
+
+            document.addEventListener('keydown', (event) => {
+                if (event.code === 'Space' && !isSpaceHeldDown) {
+                    event.preventDefault();
+                    isSpaceHeldDown = true;
+                    giveChocolate();
+                    spaceHeldTimeout = setTimeout(() => {
+                        spaceHeldInterval = setInterval(giveChocolate, 100);
+                    }, 200);
+                }
             });
 
-            class Point {
-                constructor() {
-                    const angle = Math.random() * Math.PI * 2;
-                    const maxRadius = Math.sqrt(Math.pow(width / 2, 2) + Math.pow(height / 2, 2));
-                    const radius = Math.sqrt(Math.random()) * maxRadius; 
-                    this.startX = width / 2 + radius * Math.cos(angle);
-                    this.startY = height / 2 + radius * Math.sin(angle);
-                    this.x = this.startX;
-                    this.y = this.startY;
-                    this.size = Math.random() * 2.5 + 1;
-                    this.alpha = Math.random() * 0.7 + 0.1;
-                    this.blinkSpeed = (Math.random() - 0.5) * 0.015;
+            document.addEventListener('keyup', (event) => {
+                if (event.code === 'Space') {
+                    event.preventDefault();
+                    clearTimeout(spaceHeldTimeout);
+                    clearInterval(spaceHeldInterval);
+                    isSpaceHeldDown = false;
                 }
-                draw() {
-                    ctx.fillStyle = `rgba(255, 255, 255, ${this.alpha})`;
-                    ctx.beginPath();
-                    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                    ctx.fill();
-                }
-                update(progress) {
-                    this.alpha += this.blinkSpeed;
-                    if (this.alpha > 0.8 || this.alpha < 0.1) this.blinkSpeed *= -1;
-                    const easedProgress = 0.5 - 0.5 * Math.cos(progress * Math.PI);
-                    this.x = this.startX + (targetPoint.x - this.startX) * easedProgress;
-                    this.y = this.startY + (targetPoint.y - this.startY) * easedProgress;
-                }
-            }
-            
-            function init() {
-                points.length = 0; 
-                for (let i = 0; i < pointCount; i++) points.push(new Point());
-            }
-            
-            function initRays() {
-                rays.length = 0;
-                for (let i = 0; i < rayCount; i++) {
-                    rays.push({
-                        angle: (Math.PI * 2 / rayCount) * i,
-                        length: targetPoint.size * 1.5,
-                        maxLength: targetPoint.size * 4,
-                        speed: Math.random() * 0.5 + 0.5,
-                        offset: Math.random() * Math.PI,
-                    });
-                }
-            }
+            });
 
-            function animate() {
-                ctx.fillStyle = 'rgba(11, 2, 31, 0.15)';
-                ctx.fillRect(0, 0, width, height);
-                currentProgress += (targetProgress - currentProgress) * 0.05;
-                points.forEach(p => { p.update(currentProgress); p.draw(); });
-
-                if (currentProgress > 0.9) {
-                    const finalStarFade = (currentProgress - 0.9) / 0.1;
-                    ctx.fillStyle = `rgba(255, 255, 255, ${1 * finalStarFade})`;
-                    ctx.shadowColor = 'white';
-                    ctx.shadowBlur = 30;
-                    ctx.beginPath();
-                    ctx.arc(targetPoint.x, targetPoint.y, targetPoint.size, 0, Math.PI * 2);
-                    ctx.fill();
-                    ctx.shadowBlur = 0;
-                    rotation += 0.005;
-                    const time = Date.now() * 0.002;
-                    rays.forEach(ray => {
-                        const lengthMultiplier = 0.5 + Math.sin(time * ray.speed + ray.offset) * 0.5;
-                        const currentLength = ray.length + (ray.maxLength - ray.length) * lengthMultiplier;
-                        const currentAlpha = 0.5 + Math.sin(time * ray.speed * 1.2 + ray.offset) * 0.5;
-                        const startX = targetPoint.x;
-                        const startY = targetPoint.y;
-                        const endX = targetPoint.x + Math.cos(ray.angle + rotation) * currentLength;
-                        const endY = targetPoint.y + Math.sin(ray.angle + rotation) * currentLength;
-                        const gradient = ctx.createLinearGradient(startX, startY, endX, endY);
-                        gradient.addColorStop(0, `rgba(255, 255, 255, ${currentAlpha * finalStarFade})`);
-                        gradient.addColorStop(1, `rgba(255, 255, 255, 0)`);
-                        ctx.strokeStyle = gradient;
-                        ctx.lineWidth = 2;
-                        ctx.beginPath();
-                        ctx.moveTo(startX, startY);
-                        ctx.lineTo(endX, endY);
-                        ctx.stroke();
-                    });
+            function updateGame() {
+                if (chocolateCountDisplay) {
+                    chocolateCountDisplay.textContent = chocolateCount;
                 }
-                requestAnimationFrame(animate);
-            }
-
-            let hasTypewriterStarted = false;
-            function handleState() {
-                const scrollableHeight = document.documentElement.scrollHeight - window.innerHeight;
-                const scrollPercent = scrollableHeight > 0 ? window.scrollY / scrollableHeight : 0;
                 
-                // ADDED: Update the progress bar width
-                progressBar.style.width = `${scrollPercent * 100}%`;
+                const progressPercent = Math.min((chocolateCount / ECSTATIC_THRESHOLD) * 100, 100);
+                progressBar.style.width = `${progressPercent}%`;
 
-                const convergenceEnd = 0.65;
-                const letterStart = 0.85;
+                let newImage = waitingImage;
+                let newGlow = '';
+                let newMood = 'waiting';
 
-                if (scrollPercent < convergenceEnd) {
-                    targetProgress = scrollPercent / convergenceEnd;
+                if (chocolateCount >= ECSTATIC_THRESHOLD) {
+                    newMood = 'ecstatic'; newImage = ecstaticImage; newGlow = 'ecstatic-glow';
+                } else if (chocolateCount >= HAPPY_THRESHOLD) {
+                    newMood = 'happy'; newImage = happyImage; newGlow = 'happy-glow';
+                } else if (chocolateCount >= CONTENT_THRESHOLD) {
+                    newMood = 'content'; newImage = contentImage; newGlow = ''; 
                 } else {
-                    targetProgress = 1;
-                }
-                
-                if (scrollPercent > letterStart) {
-                    targetProgress = 0;
+                    newMood = 'waiting'; newImage = waitingImage; newGlow = ''; 
                 }
 
-                let newText = '';
-                if (scrollPercent < 0.3) newText = textStates[0];
-                else if (scrollPercent < 0.6) newText = textStates[1];
-                else newText = textStates[2];
-                
-                if (scrollPercent > letterStart) {
-                    const letterProgress = (scrollPercent - letterStart) / (1 - letterStart);
-                    scrollText.style.opacity = 1 - letterProgress; 
-                    letterSection.style.opacity = letterProgress;
-                    letterSection.style.pointerEvents = 'auto';
-                    if (letterProgress > 0.5 && !hasTypewriterStarted) {
-                        hasTypewriterStarted = true;
-                        startLetterTypewriter();
+                if (newMood !== currentMood && isAudioReady) {
+                    const oldLevel = getMoodLevel(currentMood);
+                    const newLevel = getMoodLevel(newMood);
+                    const now = Tone.now();
+
+                    if (newLevel > oldLevel) {
+                        if (newMood === 'content') synth.triggerAttackRelease("C5", "8n", now);
+                        else if (newMood === 'happy') { synth.triggerAttackRelease("E5", "8n", now); synth.triggerAttackRelease("G5", "8n", now + 0.1); }
+                        else if (newMood === 'ecstatic') { synth.triggerAttackRelease("C6", "8n", now); synth.triggerAttackRelease("E6", "8n", now + 0.1); synth.triggerAttackRelease("G6", "8n", now + 0.2); }
+                    } else if (newLevel < oldLevel) {
+                        if (newMood === 'happy') { synth.triggerAttackRelease("B4", "8n", now); synth.triggerAttackRelease("G4", "8n", now + 0.1); }
+                        else if (newMood === 'content') { synth.triggerAttackRelease("A4", "8n", now); synth.triggerAttackRelease("F4", "8n", now + 0.1); }
+                        else if (newMood === 'waiting') { synth.triggerAttackRelease("C4", "8n", now); synth.triggerAttackRelease("A3", "4n", now + 0.15); }
                     }
-                } else {
-                    scrollText.style.opacity = 1;
-                    letterSection.style.opacity = 0;
-                    letterSection.style.pointerEvents = 'none';
                 }
+                currentMood = newMood;
 
-                backButton.style.visibility = 'hidden';
-
-                if (newText !== scrollText.textContent && scrollPercent < letterStart) {
-                    scrollText.style.opacity = 0;
-                    setTimeout(() => {
-                        scrollText.textContent = newText;
-                        scrollText.style.opacity = 1;
-                    }, 300);
+                if (characterImage.src !== newImage) {
+                    characterImage.src = newImage;
                 }
-            }
-            
-            const letterParagraphs = document.querySelectorAll('.letter-typewriter');
-            const finalBackButton = document.getElementById('final-back-button');
-            const letterMessageParts = [
-                "Priye Kanmani,",
-                "Happiest Birthday Nitharshini, how grateful I am to have you in my life ❤️ I know I've said it over a hundred times, but I've felt the same happiness every time I say it. You're the shimmer in my eyes and the ease in my chest 😛 nothing quite makes me feel the calm like your presence does. I really like the way you are, the way you're so fun, smart, and mature all at once. I love seeing you be, from you cooking the meal, chopping onions, putting lotion, combing your hair to dressing up in that beautiful dress, you being so happy about the doughnut or how you laugh after you bait me 😛 I love it all, you make my heart so full, and I wish you feel the same. You're kind, you're really FUNNY, like fr I really found a 4-leaved clover in such a random way 😝 and on top of all that, you're deliciously hot 🤤 I remember how my heart was beating when you were so close to me. ",
-                "AND even how you take care of me, how you caress me hug me and listen to me, how you took care of the little mess that I created in your house hehe. I love listening to you, I would listen to you speak and yap all day long about nothing in particular. I like how you make so much effort for me, how you agreed to date me, how you make me feel so safe, so warm, so wanted, and so heard, you're a great girlfriend and an even better friend 😛 I like how close you and Narita are, and how both of you kept going even when you were in boarding, or how you miss and admire your mom, which really shows when you admire and love someone, you're so willing and PERSISTENT , I am the happiest when I am around you, I love knowing you when you tell me about you or something that happened to you. I still remember going to your old school and I find it so intimate, us walking around the place you spent your childhood at and you telling me about it. Happiest birthday my girl, my madamji, you're an amazing person, so damn sure you make all of our lives so much better by being in it, by being the funny mean bitch that you are 😛 I know I can't be there for you, but I just know it wouldn't be long till I will be there at your door on your birthday, hoping that you have a nice day and a great year ahead. Wishing to keep meeting and keep knowing you a little more than I already do, and keep liking and admiring you a little more than I already do :)",
-                "ennaku unnai pidikum nitha :P"
-            ];
-            
-            function typeWriter(element, text, index, callback) {
-                if (index === 0) element.classList.add('typing-cursor');
-                if (index < text.length) {
-                    element.innerHTML += text.charAt(index);
-                    setTimeout(() => typeWriter(element, text, index + 1, callback), 100);
-                } else {
-                    element.classList.remove('typing-cursor');
-                    if (callback) callback();
+                
+                characterImage.className = 'mx-auto rounded-2xl shadow-lg w-[300px] h-[300px]';
+                if (newGlow) {
+                    characterImage.classList.add(newGlow);
                 }
             }
 
-            function startLetterTypewriter(paragraphIndex = 0) {
-                if (paragraphIndex < letterParagraphs.length) {
-                    const currentParagraph = letterParagraphs[paragraphIndex];
-                    const currentText = letterMessageParts[paragraphIndex];
-                    typeWriter(currentParagraph, currentText, 0, () => {
-                        startLetterTypewriter(paragraphIndex + 1);
-                    });
-                } else {
-                    setTimeout(() => {
-                        finalBackButton.style.visibility = 'visible';
-                    }, 500);
+            setInterval(() => {
+                if (chocolateCount > 0) {
+                    chocolateCount--;
+                    updateGame();
                 }
-            }
-            
-            // --- Background Music Control ---
-            const backgroundMusic = document.getElementById('background-music');
-            const playMusicBtn = document.getElementById('play-music-btn');
-            const playIcon = document.getElementById('play-icon');
-            const muteIcon = document.getElementById('mute-icon');
+            }, 400);
 
-            function playAudio() {
-                if (backgroundMusic.paused) {
-                    backgroundMusic.play().then(() => {
-                        playIcon.classList.add('hidden');
-                        muteIcon.classList.remove('hidden');
-                    }).catch(error => {
-                        console.log("Audio playback was prevented. User may need to interact with the play button.");
-                    });
-                }
-            }
-            
-            // This function is now only triggered on the first scroll.
-            function onFirstScroll() {
-                playAudio();
-            }
-
-            if (playMusicBtn && backgroundMusic) {
-                playMusicBtn.addEventListener('click', () => {
-                    if (backgroundMusic.paused) {
-                        playAudio();
-                    } else {
-                        backgroundMusic.pause();
-                        muteIcon.classList.add('hidden');
-                        playIcon.classList.remove('hidden');
-                    }
-                });
-
-                // Listen for the first scroll to start the music.
-                // The `{ once: true }` option automatically removes the listener after it fires once.
-                window.addEventListener('scroll', onFirstScroll, { once: true });
-            }
-
-            window.addEventListener('scroll', handleState, { passive: true });
-            init();
-            initRays();
-            animate();
-            handleState(); 
+            updateGame();
         });
     </script>
+
 </body>
 </html>
